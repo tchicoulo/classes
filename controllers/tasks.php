@@ -1,27 +1,14 @@
 <?php
 
-  require_once $app."/database/tasks.php";
+echo "tu as bien chargé tasks.php<br />";
 
-  class TaskController extends TaskModel {
+require_once "models/tasks.php";
 
-    public function getTasks () {
-      $tasks = parent::getAll();
-      global $app;
-      $content = $app."/views/tasks.php";
-      require_once $app."/views/layout.php";
-    }
+// On va instancier notre TaskModel
+$tasks = new TaskModel();
 
-  }
+$taskListView = $tasks->getAll();
 
-  $tasks = new TaskController();
+require_once "views/tasks.php";
 
-  global $route;
-  $method = $route->getMethod();
-
-  switch ($method) {
-    case "GET":
-        $tasks->getTasks();
-        break;
-  }
-
-?>
+ ?>
