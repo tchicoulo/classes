@@ -23,8 +23,7 @@ class Route {
 
             $controller = $this->formatUrl()[1];
 
-
-           require_once "controllers/".$controller.".php";
+           require_once "./controllers/tasks.php";
     // c'est pareil que :  require "./controllers/tasks.php";
         }
     }
