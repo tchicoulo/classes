@@ -1,32 +1,40 @@
 <?php
 
-class Route {
+    class Route {
+
         private function formatUrl () {
-          if (isset($_SERVER["PATH_INFO"])) {
-            $url = $_SERVER["PATH_INFO"];
-          }
-          else {
-            $url = "/";
-          }
-            $urlTrim = trim($url, "/");
-            $urlTab = explode("/", $url);
-            // echo $urlTab[1];
-            return $urlTab;
+            $url = $_SERVER['PATH_INFO'];
+            $urlTrim = trim($url, '/');
+            return explode('/', $urlTrim);
         }
 
+        public function getMethod () {
+            return $_SERVER['REQUEST_METHOD'];
+        }
+
+        public function getAction () {
+            $urlTab = $this->formatUrl();
+            $action = $urlTab[1];
+            if ($action) {
+                echo 'Action : '.$action;
+            }
+        }
 
         public function getController () {
 
-          // $this ->formatUrl() prend la valeur de ce que me renvoie la fonction.
-          //donc elle prends la valeur de $urlTab;
-          //Comme pour afficher tasks je dois afficher $this->formatUrl[1];
+            $urlTab = $this->formatUrl();
+            $controller = $urlTab[0];
+            
+            global $app;
+            $path = $app.'/controllers/'.$controller.'.php';
 
-            $controller = $this->formatUrl()[1];
-
-
-           require_once "controllers/".$controller.".php";
-    // c'est pareil que :  require "./controllers/tasks.php";
+            if ( is_file($path) ) {
+                require_once $path;
+            }
+            else {
+                require_once $app."/views/404.php";
+            }
         }
     }
 
- ?>
+?>
